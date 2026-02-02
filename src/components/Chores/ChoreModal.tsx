@@ -88,15 +88,18 @@ export function ChoreModal({ isOpen, onClose, editChore, initialDate }: ChoreMod
 
     const choreData: Omit<Chore, 'id'> = {
       title: title.trim(),
-      description: description.trim() || undefined,
       assigneeId,
       dueDate,
       category,
       completed: editChore?.completed || false,
-      completedDate: editChore?.completedDate,
       recurrence: isRecurring
-        ? { frequency, endDate: endDate || undefined }
+        ? {
+            frequency,
+            ...(endDate ? { endDate } : {}),
+          }
         : null,
+      ...(description.trim() ? { description: description.trim() } : {}),
+      ...(editChore?.completedDate ? { completedDate: editChore.completedDate } : {}),
     };
 
     if (editChore) {
